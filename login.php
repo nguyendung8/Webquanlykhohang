@@ -13,22 +13,10 @@
       if(mysqli_num_rows($select_users) > 0){//kiểm tra tài khoản có tồn tại không
 
          $row = mysqli_fetch_assoc($select_users);
-         //kiểm tra quyền của tài khoản và đưa đến trang tương ứng
-         if($row['user_type'] == 'admin'){
-
             $_SESSION['admin_name'] = $row['name'];
             $_SESSION['admin_email'] = $row['email'];
             $_SESSION['admin_id'] = $row['id'];
-            header('location:admin_page.php');
-
-         }elseif($row['user_type'] == 'user'){
-
-            $_SESSION['user_name'] = $row['name'];
-            $_SESSION['user_email'] = $row['email'];
-            $_SESSION['user_id'] = $row['id'];
             header('location:home.php');
-
-         }
 
       }else{
          $message[] = 'Email hoặc mật khẩu không chính xác!';

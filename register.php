@@ -8,8 +8,6 @@
       $email = mysqli_real_escape_string($conn, $_POST['email']);
       $pass = mysqli_real_escape_string($conn, md5($_POST['password']));
       $cpass = mysqli_real_escape_string($conn, md5($_POST['cpassword']));
-      // $user_type = $_POST['user_type'];
-      $user_type = 'user';
 
       $select_users = mysqli_query($conn, "SELECT * FROM `users` WHERE email = '$email'") or die('query failed');
 
@@ -19,7 +17,7 @@
          if($pass != $cpass){
             $message[] = 'Mật khẩu không khớp!';
          }else{
-            mysqli_query($conn, "INSERT INTO `users`(name, email, password, user_type) VALUES('$name', '$email', '$cpass', '$user_type')") or die('query failed');
+            mysqli_query($conn, "INSERT INTO `users`(name, email, password) VALUES('$name', '$email', '$cpass')") or die('query failed');
             $message[] = 'Đăng ký thành công!';
             header('location:login.php');
          }
@@ -65,10 +63,6 @@ if(isset($message)){
       <input type="email" name="email" placeholder="Nhập email" required class="box">
       <input type="password" name="password" placeholder="Nhập mật khẩu" required class="box">
       <input type="password" name="cpassword" placeholder="Nhập lại mật khẩu" required class="box">
-      <!-- <select name="user_type" class="box">
-         <option value="user">user</option>
-         <option value="admin">admin</option>
-      </select> -->
       <input type="submit" name="submit" value="Đăng ký ngay" class="btn">
       <p>Bạn đã có tài khoản? <a href="login.php">Đăng nhập</a></p>
    </form>
