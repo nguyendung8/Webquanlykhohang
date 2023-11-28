@@ -89,18 +89,6 @@
 
    }
 
-   //refersh giá sản phẩm liên tục
-   $nums_cart = mysqli_query($conn, "SELECT * FROM `cart`");
-   if(mysqli_num_rows($nums_cart)>0){
-      while($res_nums = mysqli_fetch_assoc($nums_cart)){
-         $refersh_name = $res_nums['name'];
-         $refersh_price = mysqli_query($conn,"SELECT * FROM `products` WHERE name = '$refersh_name'");
-         $res_price = mysqli_fetch_assoc($refersh_price);
-         $price_new = $res_price['newprice'];
-         mysqli_query($conn, "UPDATE `cart` SET price = '$price_new' WHERE name = '$refersh_name' ");
-      }
-   }
-
 ?>
 
 <!DOCTYPE html>
@@ -159,7 +147,7 @@
          if(mysqli_num_rows($select_products) > 0){
             while($fetch_products = mysqli_fetch_assoc($select_products)){
       ?>
-               <div class="box">
+               <div style="height: -webkit-fill-available;" class="box">
                   <img style="border-radius: 4px;" src="uploaded_img/<?php echo $fetch_products['image']; ?>" alt="">
                   <div class="name"><?php echo $fetch_products['name']; ?></div>
                   <div class="sub-name">Thương hiệu: <?php echo $fetch_products['trademark']; ?></div>
