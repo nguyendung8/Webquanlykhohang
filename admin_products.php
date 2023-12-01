@@ -14,6 +14,7 @@
 
       $name = mysqli_real_escape_string($conn, $_POST['name']);
       $trademark = mysqli_real_escape_string($conn, $_POST['trademark']);
+      $supplier_id= $_POST['supplier'];
       $cate_id= $_POST['category'];
       $price = $_POST['price'];
       $discount = $_POST['discount'];
@@ -31,7 +32,7 @@
       if(mysqli_num_rows($select_product_name) > 0){
          $message[] = 'Sản phẩm đã tồn tại.';
       }else{//chưa thì thêm mới
-         $add_product_query = mysqli_query($conn, "INSERT INTO `products`(name, trademark, cate_id, price, discount, newprice,quantity,initial_quantity, describes, image) VALUES('$name', '$trademark', '$cate_id', '$price', '$discount', '$newprice', '$quantity', '$initial_quantity', '$describe', '$image')") or die('query failed');
+         $add_product_query = mysqli_query($conn, "INSERT INTO `products`(name, trademark, cate_id, supplier_id, price, discount, newprice,quantity,initial_quantity, describes, image) VALUES('$name', '$trademark', '$cate_id', '$supplier_id', '$price', '$discount', '$newprice', '$quantity', '$initial_quantity', '$describe', '$image')") or die('query failed');
 
          if($add_product_query){
             if($image_size > 2000000){//kiểm tra kích thước ảnh
@@ -101,7 +102,24 @@
 
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
    <link rel="stylesheet" href="css/admin_style.css">
-
+   <style>
+      .search {
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         margin-bottom: 12px;
+      }
+      .search input {
+         padding: 10px 25px;
+         width: 425px;
+         margin-right: 10px;
+         font-size: 18px;
+         border-radius: 4px;
+      }
+      .btn {
+         margin-top:  0px !important;
+      }
+   </style>
 </head>
 <body>
    
@@ -128,6 +146,18 @@
             }
          ?>
       </select>
+      <select name="supplier" class="box">
+         <?php
+            $select_supplier= mysqli_query($conn, "SELECT * FROM `suppliers`") or die('Query failed');
+            if(mysqli_num_rows($select_supplier)>0){
+               while($fetch_supplier=mysqli_fetch_assoc($select_supplier)){
+                  echo "<option value='" . $fetch_supplier['id'] . "'>".$fetch_supplier['name']."</option>";
+               }
+            }
+            else{
+               echo "<option>Không có nhà cung cấp nào.</option>";
+            }
+         ?>
       <input type="number" min="0" name="price" class="box" placeholder="Giá sản phẩm" required>
       <input type="number" min="0" name="discount" class="box" placeholder="% giảm giá" required>
       <input type="number" min="1" name="quantity" class="box" placeholder="Số lượng" required>
@@ -137,11 +167,49 @@
    </form>
 
 </section>
-
+<form class="search" method="GET">
+        <input type="text" name="search" placeholder="Nhập tên sản phẩm cần tìm..." value="<?php if(isset($_GET['search'])) echo $_GET['search'] ?>">
+        <button type="submit" class="btn">Tìm kiếm</button>
+</form>
 <section class="show-products">
 
    <div class="box-container">
-
+   <?php if(isset($_GET['search'])) {  ?>
+      <?php
+         $search = isset($_GET['search']) ? $_GET['search'] : '';
+         $sql = mysqli_query($conn, "SELECT * FROM products WHERE name LIKE '%$search%'");
+            if(mysqli_num_rows($sql) > 0){
+               while ($row = mysqli_fetch_array($sql)) {
+         ?>
+            <div style="height: -webkit-fill-available;" class="box">
+                  <img style="border-radius: 4px;" src="uploaded_img/<?php echo $row['image']; ?>" alt="">
+                  <div class="name"><?php echo $row['name']; ?></div>
+                  <div class="sub-name">Thương hiệu: <?php echo $row['trademark']; ?></div>
+                  <?php
+                  $cate_id =  $row['cate_id'];
+                      $result= mysqli_query($conn, "SELECT * FROM `categorys` WHERE id = $cate_id") or die('Query failed');
+                      $cate_name = mysqli_fetch_assoc($result)
+                   ?>
+                  <div class="sub-name">Danh mục: <?php echo $cate_name['name']; ?></div>
+                  <?php
+                  $supplier_id =  $row['supplier_id'];
+                      $result= mysqli_query($conn, "SELECT * FROM `suppliers` WHERE id = $supplier_id") or die('Query failed');
+                      $sup_name = mysqli_fetch_assoc($result)
+                   ?>
+                  <div class="sub-name">Nhà cung cấp: <?php echo $sup_name['name']; ?></div>
+                  <div class="sub-name">Mô tả: <?php echo $row['describes']; ?></div>
+                  <div class="price"><span style="text-decoration-line: line-through"><?php echo number_format($row['price'],0,',','.'  ); ?></span> VND (Giảm giá: <?php echo $row['discount']; ?>%)</div>
+                  <div class="price"><?php echo number_format($row['newprice'],0,',','.' );; ?> VND (SL: <?php echo $row['quantity']; ?>)</div>
+                  <a href="admin_products.php?update=<?php echo $row['id']; ?>" class="option-btn">Cập nhật</a>
+                  <a href="admin_products.php?delete=<?php echo $row['id']; ?>" class="delete-btn" onclick="return confirm('Xóa sản phẩm này?');">Xóa</a>
+               </div>
+         <?php
+               }
+         } else {
+            echo '<p style="font-size: 25px;">Không có sản phẩm phù hợp với yêu cầu tìm kiếm của bạn</p>';
+         }
+         ?>
+   <?php  } else { ?>
       <?php
          $select_products = mysqli_query($conn, "SELECT * FROM `products`") or die('query failed');
          if(mysqli_num_rows($select_products) > 0){
@@ -157,18 +225,25 @@
                       $cate_name = mysqli_fetch_assoc($result)
                    ?>
                   <div class="sub-name">Danh mục: <?php echo $cate_name['name']; ?></div>
+                  <?php
+                  $supplier_id =  $fetch_products['supplier_id'];
+                      $result= mysqli_query($conn, "SELECT * FROM `suppliers` WHERE id = $supplier_id") or die('Query failed');
+                      $sup_name = mysqli_fetch_assoc($result)
+                   ?>
+                  <div class="sub-name">Nhà cung cấp: <?php echo $sup_name['name']; ?></div>
                   <div class="sub-name">Mô tả: <?php echo $fetch_products['describes']; ?></div>
                   <div class="price"><span style="text-decoration-line: line-through"><?php echo number_format($fetch_products['price'],0,',','.'  ); ?></span> VND (Giảm giá: <?php echo $fetch_products['discount']; ?>%)</div>
                   <div class="price"><?php echo number_format($fetch_products['newprice'],0,',','.' );; ?> VND (SL: <?php echo $fetch_products['quantity']; ?>)</div>
                   <a href="admin_products.php?update=<?php echo $fetch_products['id']; ?>" class="option-btn">Cập nhật</a>
                   <a href="admin_products.php?delete=<?php echo $fetch_products['id']; ?>" class="delete-btn" onclick="return confirm('Xóa sản phẩm này?');">Xóa</a>
                </div>
-      <?php
+            <?php
             }
-      }else{
-         echo '<p class="empty">Không có sản phẩm nào được thêm!</p>';
-      }
-      ?>
+            }else{
+               echo '<p class="empty">Không có sản phẩm nào được thêm!</p>';
+            }
+            ?>
+   <?php } ?>
    </div>
 
 </section>
@@ -186,6 +261,7 @@
                   <input type="hidden" name="update_p_id" value="<?php echo $fetch_update['id']; ?>">
                   <input type="hidden" name="update_old_image" value="<?php echo $fetch_update['image']; ?>">
                   <input type="hidden" name="update_trademark" value="<?php echo $fetch_update['trademark']; ?>">
+                  <input type="hidden" name="update_supplier" value="<?php echo $fetch_update['supplier_id']; ?>">
                   <img src="uploaded_img/<?php echo $fetch_update['image']; ?>" alt="">
                   <input type="text" name="update_name" value="<?php echo $fetch_update['name']; ?>" class="box" required placeholder="Tên sản phẩm">
                   <select name="update_category" class="box">
