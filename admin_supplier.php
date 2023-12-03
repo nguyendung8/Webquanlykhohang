@@ -96,6 +96,22 @@
         border-radius: .5rem;
         background-color: var(--white);
     }
+    .search {
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         margin-bottom: 12px;
+    }
+    .search input {
+        padding: 10px 25px;
+        width: 425px;
+        margin-right: 10px;
+        font-size: 18px;
+        border-radius: 4px;
+    }
+    .btn {
+        margin-top:  0px !important;
+    }
    </style>
 </head>
 <body>
@@ -105,17 +121,60 @@
 
 <section class="add-products">
    <form action="" method="post" enctype="multipart/form-data">
-      <h3>Thêm nhà cung cấp</h3>
-      <input type="text" name="name" class="box" placeholder="Tên nhà cung cấp" required>
-      <input type="text" name="email" class="box" placeholder="Email" required>
-      <input type="number" name="phone" class="box" placeholder="Số điện thoại" required>
-      <input type="text" name="address" class="box" placeholder="Địa chỉ" required>
-      <input type="submit" value="Thêm" name="add_supplier" class="btn">
+        <h3>Thêm nhà cung cấp</h3>
+        <input type="text" name="name" class="box" placeholder="Tên nhà cung cấp" required>
+        <input type="text" name="email" class="box" placeholder="Email" required>
+        <input type="number" name="phone" class="box" placeholder="Số điện thoại" required>
+        <input type="text" name="address" class="box" placeholder="Địa chỉ" required>
+        <input type="submit" value="Thêm" name="add_supplier" class="btn">
    </form>
 </section>
+<form class="search" method="GET">
+        <input type="text" name="search" placeholder="Nhập tên nhà cung cấp cần tìm..." value="<?php if(isset($_GET['search'])) echo $_GET['search'] ?>">
+        <button type="submit" class="btn">Tìm kiếm</button>
+</form>
 <section class="users">
 
    <div class="container">
+   <?php if(isset($_GET['search'])) {  ?>
+    <table class="table table-striped">
+         <thead>
+            <tr>
+               <th scope="col">ID</th>
+               <th scope="col">Tên</th>
+               <th scope="col">Email</th>
+               <th scope="col">Địa chỉ</th>
+               <th scope="col">Số điện thoại</th>
+               <th scope="col">Thao tác</th>
+            </tr>
+         </thead>
+         <tbody>
+         <?php
+            $search = isset($_GET['search']) ? $_GET['search'] : '';
+            $sql = mysqli_query($conn, "SELECT * FROM suppliers WHERE name LIKE '%$search%'");
+               if(mysqli_num_rows($sql) > 0){
+                  while ($row = mysqli_fetch_array($sql)) {
+             ?>
+            <tr>
+               <th scope="row"><?php echo $row['id']; ?></th>
+               <td><?php echo $row['name']; ?></td>
+               <td><?php echo $row['email']; ?></td>
+               <td><?php echo $row['address']; ?></td>
+               <td><?php echo $row['phone']; ?></td>
+               <td>
+                  <a href="admin_supplier.php?update=<?php echo $row['id']; ?>" class="">Sửa</a> | 
+                  <a href="admin_supplier.php?delete=<?php echo $row['id']; ?>" class="" onclick="return confirm('Xóa khách hàng này?');">Xóa</a>
+               </td>
+            </tr>
+         <?php
+                  }
+            } else {
+               echo "<tr>"; echo "<td colspan=6 align=center>"; echo '<p style="font-size: 25px;">Không có nhà cung cấp phù hợp với yêu cầu tìm kiếm của bạn</p>'; echo "</td>"; echo "</tr>";
+            }
+         ?>
+         </tbody>
+      </table>
+    <?php  } else { ?>
       <table class="table table-striped">
          <thead>
             <tr>
@@ -148,6 +207,7 @@
          ?>
          </tbody>
       </table>
+    <?php } ?>
    </div>
 
 </section>
