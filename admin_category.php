@@ -59,8 +59,13 @@
    <title>Danh mục</title>
 
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
    <link rel="stylesheet" href="css/admin_style.css">
-
+   <style>
+      table {
+         font-size: 15px;
+      }
+   </style>
 </head>
 <body>
    
@@ -81,25 +86,34 @@
 
 <section class="show-products">
 
-   <div class="box-container">
-
-      <?php
-         $select_categorys = mysqli_query($conn, "SELECT * FROM `categorys`") or die('query failed');
-         if(mysqli_num_rows($select_categorys) > 0){
-            while($fetch_categorys = mysqli_fetch_assoc($select_categorys)){
-      ?>
-      <div style="height: -webkit-fill-available;" class="box">
-         <div class="name"><?php echo $fetch_categorys['name']; ?></div>
-         <div class="sub-name">Mô tả: <?php echo $fetch_categorys['describes']; ?></div>
-         <a href="admin_category.php?update=<?php echo $fetch_categorys['id']; ?>" class="option-btn">Cập nhật</a>
-         <a href="admin_category.php?delete=<?php echo $fetch_categorys['id']; ?>" class="delete-btn" onclick="return confirm('Xóa thể loại sản phẩm này?');">Xóa</a>
-      </div>
-      <?php
-         }
-      }else{
-         echo '<p class="empty">Không có danh mục sản phẩm nào được thêm!</p>';  
-      }
-      ?>
+   <div class="container">
+   <table class="table table-striped">
+         <thead>
+            <tr>
+               <th scope="col">ID</th>
+               <th scope="col">Tên danh mục</th>
+               <th scope="col">Mô tả</th>
+            </tr>
+         </thead>
+         <tbody>
+         <?php
+            $select_categories = mysqli_query($conn, "SELECT * FROM `categorys`") or die('query failed');
+            while($fetch_cate = mysqli_fetch_assoc($select_categories)){
+         ?>
+            <tr>
+               <th scope="row"><?php echo $fetch_cate['id']; ?></th>
+               <td><?php echo $fetch_cate['name']; ?></td>
+               <td><?php echo $fetch_cate['describes']; ?></td>
+               <td>
+                  <a href="admin_category.php?update=<?php echo $fetch_cate['id']; ?>" class="">Sửa</a> | 
+                  <a href="admin_category.php?delete=<?php echo $fetch_cate['id']; ?>" class="" onclick="return confirm('Xóa danh mục này?');">Xóa</a>
+               </td>
+            </tr>
+         <?php
+            }
+         ?>
+         </tbody>
+      </table>
    </div>
 
 </section>
@@ -118,7 +132,7 @@
                   <input type="text" name="update_name" value="<?php echo $fetch_update['name']; ?>" class="box" required placeholder="Tên">
                   <input type="text" name="update_describes" value="<?php echo $fetch_update['describes']; ?>" class="box" required placeholder="Mô tả">
                   <input type="submit" value="Cập nhật" name="update_category" class="btn"> <!-- submit form cập nhật -->
-                  <input type="reset" value="Hủy"  onclick="window.location.href = 'admin_category.php'" class="option-btn">
+                  <input type="reset" value="Hủy"  onclick="window.location.href = 'admin_category.php'" class="btn">
                </form>
    <?php
             }
