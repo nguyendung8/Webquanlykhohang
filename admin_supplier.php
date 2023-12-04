@@ -28,8 +28,13 @@
 
    if(isset($_GET['delete'])){//xóa nhà cung cấp từ onclick href='delete'
       $delete_id = $_GET['delete'];
-      mysqli_query($conn, "DELETE FROM `suppliers` WHERE id = '$delete_id'") or die('query failed');
-      header('location:admin_supplier.php');
+      try {
+         mysqli_query($conn, "DELETE FROM `suppliers` WHERE id = '$delete_id'") or die('query failed');
+
+         $message[] = 'Xóa nhà cung cấp thành công';
+      } catch ( Exception) {
+         $message[] = 'Xóa nhà cung cấp không thành công';
+      }
    }
 
    if(isset($_POST['update_supplier'])){//cập nhật nhà cung cấp từ form submit name='update_supplier'

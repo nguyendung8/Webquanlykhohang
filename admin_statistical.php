@@ -6,12 +6,18 @@
 
    $admin_id = $_SESSION['admin_id']; //tạo session admin
 
-   if(!isset($admin_id)){// session không tồn tại => quay lại trang đăng nhập
-      header('location:login.php');
-   }
-
-   $sql_total_price = "SELECT SUM(total_price) AS TotalPrice FROM orders";
-   $total_price = $conn->query($sql_total_price);
+    if(!isset($admin_id)){// session không tồn tại => quay lại trang đăng nhập
+        header('location:login.php');
+    }
+    if(isset($_POST['submit'])) {
+        $date_from = date($_POST['date_from']);
+        $date_to = date($_POST['date_to']);
+        $sql_total_price = "SELECT SUM(total_price) AS Total FROM orders WHERE placed_on between '$date_from' AND '$date_to';";
+        $total_price = $conn->query($sql_total_price);
+    } else {
+        $sql_total_price = "SELECT SUM(total_price) AS Total FROM orders;";
+        $total_price = $conn->query($sql_total_price); 
+    }
    $sql_out_of_stock = "SELECT * FROM products WHERE quantity = 0";
    $result_stock = $conn->query($sql_out_of_stock);
    $out_of_stock = [];
@@ -46,6 +52,24 @@
             align-items: center;
             gap: 10px;
         }
+        .input-date {
+            border: 1px solid;
+            border-radius: 2px;
+            padding: 4px 7px;
+        }
+        .send-btn {
+            background: blueviolet;
+            max-width: 52px;
+            text-align: center;
+            padding: 4.5px 10px;
+            border-radius: 3px;
+            color: #fff;
+            font-size: 16px;
+            margin-left: 7px;
+        }
+        .send-btn:hover {
+            opacity: 0.9;
+        }
     </style>
 </head>
 <body>
@@ -53,13 +77,17 @@
 <?php include 'admin_header.php'; ?>
 
     <h1 style="margin-top: 25px;" class="title">Thống kê</h1>
-
    <div class="total_money">
     <h1 class="statis_title">Tổng doanh thu</h1>
+    <form action="" method="POST">
+        Từ ngày: <input class="input-date" type="date" name="date_from" id="" value="<?php  if(isset($_POST['submit'])) echo $date_from  ?>">
+        Đến ngày: <input class="input-date" type="date" name="date_to" id="" value="<?php  if(isset($_POST['submit'])) echo $date_to  ?>">
+        <input type="submit" class="send-btn" value="Gửi" name="submit">
+    </form>
     <div class="total_price">
         <h4>Tổng doanh thu từ các sản phẩm đã bán được: </h4>
         <div style="font-size: 17px;">
-            <?php echo number_format($total_price->fetch_object()->TotalPrice, 0,',','.') . ' đồng'; ?>
+            <?php  echo number_format($total_price->fetch_object()->Total, 0,',','.') . ' đồng'; ?>
         </div>
     </div>
    </div>

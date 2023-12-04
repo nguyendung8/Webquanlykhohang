@@ -28,8 +28,13 @@
 
    if(isset($_GET['delete'])){//xóa khách hàng từ onclick href='delete'
       $delete_id = $_GET['delete'];
-      mysqli_query($conn, "DELETE FROM `customers` WHERE id = '$delete_id'") or die('query failed');
-      header('location:admin_customers.php');
+      try {
+         mysqli_query($conn, "DELETE FROM `customers` WHERE id = '$delete_id'") or die('query failed');
+         
+         $message[] = "Xóa khách hàng thành công";
+      } catch(Exception) {
+         $message[] = "Xóa khách hàng không thành công";
+      }
    }
 
    if(isset($_POST['update_customer'])){//cập nhật khách hàng từ form submit name='update_customer'

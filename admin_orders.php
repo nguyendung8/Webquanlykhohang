@@ -24,7 +24,7 @@
       $fetch_product=mysqli_fetch_assoc($select_product);
       $product_name = $fetch_product['name'];
       $total_price = $fetch_product['newprice'] * $product_quantity;   
-      $placed_on = date('d-m-Y');
+      $placed_on = date('Y-m-d');
       $payment_status = "Chờ xác nhận";
 
 
@@ -32,9 +32,9 @@
       $add_order_query = mysqli_query($conn, "INSERT INTO `orders`(customer_id, name, phone, email, address, note, product_quantity, product_name, total_price, placed_on, payment_status) VALUES('$customer_id', '$name', '$phone', '$email', '$address', '$note', '$product_quantity','$product_name',  '$total_price', '$placed_on', '$payment_status')") or die('query failed');
 
       if($add_order_query) {
-         $message[] = 'Thêm sản phẩm thành công!';
+         $message[] = 'Thêm đơn hàng thành công!';
       } else {
-         $message[] = 'Thêm sản phẩm không thành công !';
+         $message[] = 'Thêm đơn hàng không thành công !';
       }
    }
    if(isset($_POST['update_order'])){//cập nhật trạng thái đơn hàng từ submit='update_order'
