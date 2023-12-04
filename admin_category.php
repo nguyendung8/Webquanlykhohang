@@ -70,6 +70,22 @@
       table {
          font-size: 15px;
       }
+      .search {
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         margin-bottom: 12px;
+    }
+    .search input {
+        padding: 10px 25px;
+        width: 425px;
+        margin-right: 10px;
+        font-size: 18px;
+        border-radius: 4px;
+    }
+    .btn {
+        margin-top:  0px !important;
+    }
    </style>
 </head>
 <body>
@@ -89,15 +105,56 @@
 
 </section>
 
+<form class="search" method="GET">
+        <input type="text" name="search" placeholder="Nhập tên danh mục cần tìm..." value="<?php if(isset($_GET['search'])) echo $_GET['search'] ?>">
+        <button type="submit" class="btn">Tìm kiếm</button>
+</form>
+
 <section class="show-products">
 
    <div class="container">
-   <table class="table table-striped">
+   <?php if(isset($_GET['search'])) {  ?>
+      <table class="table table-striped">
          <thead>
             <tr>
                <th scope="col">ID</th>
                <th scope="col">Tên danh mục</th>
                <th scope="col">Mô tả</th>
+               <th scope="col">Thao tác</th>
+            </tr>
+         </thead>
+         <tbody>
+         <?php
+            $search = isset($_GET['search']) ? $_GET['search'] : '';
+            $sql = mysqli_query($conn, "SELECT * FROM categorys WHERE name LIKE '%$search%'");
+               if(mysqli_num_rows($sql) > 0){
+                  while ($row = mysqli_fetch_array($sql)) {
+             ?>
+            <tr>
+               <th scope="row"><?php echo $row['id']; ?></th>
+               <td><?php echo $row['name']; ?></td>
+               <td><?php echo $row['describes']; ?></td>
+               <td>
+                  <a href="admin_category.php?update=<?php echo $row['id']; ?>" class="">Sửa</a> | 
+                  <a href="admin_category.php?delete=<?php echo $row['id']; ?>" class="" onclick="return confirm('Xóa danh mục này?');">Xóa</a>
+               </td>
+            </tr>
+         <?php
+                  }
+            } else {
+               echo "<tr>"; echo "<td colspan=6 align=center>"; echo '<p style="font-size: 25px;">Không có nhà cung cấp phù hợp với yêu cầu tìm kiếm của bạn</p>'; echo "</td>"; echo "</tr>";
+            }
+         ?>
+         </tbody>
+      </table>
+   <?php  } else { ?>
+      <table class="table table-striped">
+         <thead>
+            <tr>
+               <th scope="col">ID</th>
+               <th scope="col">Tên danh mục</th>
+               <th scope="col">Mô tả</th>
+               <th scope="col">Thao tác</th>
             </tr>
          </thead>
          <tbody>
@@ -119,6 +176,7 @@
          ?>
          </tbody>
       </table>
+   <?php } ?>
    </div>
 
 </section>
@@ -148,6 +206,7 @@
    ?>
 
 </section>
+<?php include 'footer.php'; ?>
 
 <script src="js/admin_script.js"></script>
 

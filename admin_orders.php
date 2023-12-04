@@ -29,7 +29,7 @@
 
 
 
-      $add_order_query = mysqli_query($conn, "INSERT INTO `orders`(customer_id, name, phone, email, address, note, product_quantity, product_name, total_price, placed_on, payment_status) VALUES('$customer_id', '$name', '$phone', '$email', '$address', '$note', '$product_quantity','$product_name',  '$total_price', '$placed_on', '$payment_status')") or die('query failed');
+      $add_order_query = mysqli_query($conn, "INSERT INTO `orders`(customer_id, product_id, name, phone, email, address, note, product_quantity, product_name, total_price, placed_on, payment_status) VALUES('$customer_id', '$product_id', '$name', '$phone', '$email', '$address', '$note', '$product_quantity','$product_name',  '$total_price', '$placed_on', '$payment_status')") or die('query failed');
 
       if($add_order_query) {
          $message[] = 'Thêm đơn hàng thành công!';
@@ -210,6 +210,7 @@
    </div>
 
 </section>
+<?php include 'footer.php'; ?>
 
 <script src="js/admin_script.js"></script>
 

@@ -128,7 +128,7 @@
         <p class="alert alert-danger">Danh sách trống</p>
     <?php endif; ?>
    </div>
-   <div class="out_of_stock">
+   <div style="margin-bottom: 30px;" class="out_of_stock">
    <h1 class="statis_title">Thống kê sản phẩm đã hết trong kho</h1>
     <?php if (count($out_of_stock) > 0): ?>
       <div class="table-responsive card mt-2">
@@ -170,6 +170,7 @@
 
 
 
+   <?php include 'footer.php'; ?>
 
 
 <script src="js/admin_script.js"></script>

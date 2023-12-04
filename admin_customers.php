@@ -70,7 +70,7 @@
       .title {
          margin-top: 5px;
       }
-      .box {
+      .box-item {
          margin:1rem 0;
          padding:1.2rem 1.4rem;
          border:var(--border);
@@ -106,10 +106,10 @@
 <section class="add-products">
    <form action="" method="post" enctype="multipart/form-data">
       <h3>Thêm khách hàng</h3>
-      <input type="text" name="name" class="box" placeholder="Tên khách hàng" required>
-      <input type="text" name="email" class="box" placeholder="Email" required>
-      <input type="number" name="phone" class="box" placeholder="Số điện thoại" required>
-      <input type="text" name="address" class="box" placeholder="Địa chỉ" required>
+      <input type="text" name="name" class="box-item" placeholder="Tên khách hàng" required>
+      <input type="text" name="email" class="box-item" placeholder="Email" required>
+      <input type="number" name="phone" class="box-item" placeholder="Số điện thoại" required>
+      <input type="text" name="address" class="box-item" placeholder="Địa chỉ" required>
       <input type="submit" value="Thêm" name="add_customer" class="btn">
    </form>
 </section>
@@ -206,10 +206,10 @@
    ?>
                <form action="" method="post" enctype="multipart/form-data">
                   <input type="hidden" name="update_c_id" value="<?php echo $fetch_update['id']; ?>">
-                  <input type="text" name="update_name" class="box" value="<?php echo $fetch_update['name'] ?>" placeholder="Tên khách hàng" required>
-                  <input type="text" name="update_email" class="box" value="<?php echo $fetch_update['email']?>" placeholder="Email" required>
-                  <input type="number" name="update_phone" class="box" value="<?php echo $fetch_update['phone']?>" placeholder="Số điện thoại" required>
-                  <input type="text" name="update_address" class="box" value="<?php echo $fetch_update['address']?>" placeholder="Địa chỉ" required>
+                  <input type="text" name="update_name" class="box-item" value="<?php echo $fetch_update['name'] ?>" placeholder="Tên khách hàng" required>
+                  <input type="text" name="update_email" class="box-item" value="<?php echo $fetch_update['email']?>" placeholder="Email" required>
+                  <input type="number" name="update_phone" class="box-item" value="<?php echo $fetch_update['phone']?>" placeholder="Số điện thoại" required>
+                  <input type="text" name="update_address" class="box-item" value="<?php echo $fetch_update['address']?>" placeholder="Địa chỉ" required>
                   <input type="submit" value="update" name="update_customer" class="btn btn-primary">
                   <input type="reset" value="cancel" id="close-update-customer" class="btn btn-warning">
                </form>
@@ -222,6 +222,9 @@
    ?>
 
 </section>
+
+<?php include 'footer.php'; ?>
+
 <script>
    document.querySelector('#close-update-customer').onclick = () =>{
       document.querySelector('.edit-customer-form').style.display = 'none';

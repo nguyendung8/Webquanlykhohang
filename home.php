@@ -82,7 +82,7 @@
    </div>
 
 </section>
-
+<?php include 'footer.php'; ?>
 <script src="js/admin_script.js"></script>
 
 </body>

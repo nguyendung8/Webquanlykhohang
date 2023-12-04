@@ -70,7 +70,7 @@
       .title {
          margin-top: 5px;
       }
-      .box {
+      .box-item {
          margin:1rem 0;
          padding:1.2rem 1.4rem;
          border:var(--border);
@@ -127,10 +127,10 @@
 <section class="add-products">
    <form action="" method="post" enctype="multipart/form-data">
         <h3>Thêm nhà cung cấp</h3>
-        <input type="text" name="name" class="box" placeholder="Tên nhà cung cấp" required>
-        <input type="text" name="email" class="box" placeholder="Email" required>
-        <input type="number" name="phone" class="box" placeholder="Số điện thoại" required>
-        <input type="text" name="address" class="box" placeholder="Địa chỉ" required>
+        <input type="text" name="name" class="box-item" placeholder="Tên nhà cung cấp" required>
+        <input type="text" name="email" class="box-item" placeholder="Email" required>
+        <input type="number" name="phone" class="box-item" placeholder="Số điện thoại" required>
+        <input type="text" name="address" class="box-item" placeholder="Địa chỉ" required>
         <input type="submit" value="Thêm" name="add_supplier" class="btn">
    </form>
 </section>
@@ -142,7 +142,7 @@
 
    <div class="container">
    <?php if(isset($_GET['search'])) {  ?>
-    <table class="table table-striped">
+      <table class="table table-striped">
          <thead>
             <tr>
                <th scope="col">ID</th>
@@ -227,8 +227,8 @@
    ?>
                <form action="" method="post" enctype="multipart/form-data">
                   <input type="hidden" name="update_s_id" value="<?php echo $fetch_update['id']; ?>">
-                  <input type="text" name="update_name" class="box" value="<?php echo $fetch_update['name'] ?>" placeholder="Tên nhà cung cấp" required>
-                  <input type="text" name="update_email" class="box" value="<?php echo $fetch_update['email']?>" placeholder="Email" required>
+                  <input type="text" name="update_name" class="box-item" value="<?php echo $fetch_update['name'] ?>" placeholder="Tên nhà cung cấp" required>
+                  <input type="text" name="update_email" class="box-item" value="<?php echo $fetch_update['email']?>" placeholder="Email" required>
                   <input type="number" name="update_phone" class="box" value="<?php echo $fetch_update['phone']?>" placeholder="Số điện thoại" required>
                   <input type="text" name="update_address" class="box" value="<?php echo $fetch_update['address']?>" placeholder="Địa chỉ" required>
                   <input type="submit" value="update" name="update_supplier" class="btn btn-primary">
@@ -243,12 +243,17 @@
    ?>
 
 </section>
+
+<?php include 'footer.php'; ?>
+
 <script>
    document.querySelector('#close-update-supplier').onclick = () =>{
       document.querySelector('.edit-supplier-form').style.display = 'none';
       window.location.href = 'admin_supplier.php';
 }
 </script>
+
+
 <script src="js/admin_script.js"></script>
 
 </body>
