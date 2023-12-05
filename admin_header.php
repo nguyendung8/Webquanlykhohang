@@ -15,16 +15,16 @@
 
    <div class="flex">
 
-      <a href="home.php" class="logo">Quản lý nhà kho</a>
+      <a style="text-decoration: none;" href="home.php" class="logo">Quản lý nhà kho</a>
 
-      <nav class="navbar">
-         <a href="home.php">Trang chủ</a>
-         <a href="admin_products.php">Sản phẩm</a>
-         <a href="admin_category.php">Danh mục</a>
-         <a href="admin_supplier.php">Nhà cung cấp</a>
-         <a href="admin_orders.php">Đơn hàng</a>
-         <a href="admin_customers.php">Khách hàng</a>
-         <a href="admin_statistical.php">Thống kê</a>
+      <nav style="min-height: unset; margin-bottom: 0px;" class="navbar">
+         <a style="text-decoration: none;" href="home.php">Trang chủ</a>
+         <a style="text-decoration: none;" href="admin_products.php">Sản phẩm</a>
+         <a style="text-decoration: none;" href="admin_category.php">Danh mục</a>
+         <a style="text-decoration: none;" href="admin_supplier.php">Nhà cung cấp</a>
+         <a style="text-decoration: none;" href="admin_orders.php">Đơn hàng</a>
+         <a style="text-decoration: none;" href="admin_customers.php">Khách hàng</a>
+         <a style="text-decoration: none;" href="admin_statistical.php">Thống kê</a>
       </nav>
 
       <div class="icons">
