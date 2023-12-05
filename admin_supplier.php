@@ -229,8 +229,8 @@
                   <input type="hidden" name="update_s_id" value="<?php echo $fetch_update['id']; ?>">
                   <input type="text" name="update_name" class="box-item" value="<?php echo $fetch_update['name'] ?>" placeholder="Tên nhà cung cấp" required>
                   <input type="text" name="update_email" class="box-item" value="<?php echo $fetch_update['email']?>" placeholder="Email" required>
-                  <input type="number" name="update_phone" class="box" value="<?php echo $fetch_update['phone']?>" placeholder="Số điện thoại" required>
-                  <input type="text" name="update_address" class="box" value="<?php echo $fetch_update['address']?>" placeholder="Địa chỉ" required>
+                  <input type="number" name="update_phone" class="box-item" value="<?php echo $fetch_update['phone']?>" placeholder="Số điện thoại" required>
+                  <input type="text" name="update_address" class="box-item" value="<?php echo $fetch_update['address']?>" placeholder="Địa chỉ" required>
                   <input type="submit" value="update" name="update_supplier" class="btn btn-primary">
                   <input type="reset" value="cancel" id="close-update-supplier" class="btn btn-warning">
                </form>
